@@ -409,11 +409,35 @@ section:not(.hero) h2:hover { letter-spacing: .01em; }
 footer { grid-template-columns: minmax(0, 1fr); }
 @media (max-width: 560px) { .rows a { font-size: 1.2rem; } }
 
-/* phone menu: the page links hide below 560px, so a menu button opens them as a dropdown */
-.menu { display: none; position: relative; }
-.menu summary { list-style: none; width: 44px; height: 44px; display: grid; place-items: center; cursor: pointer; border: 1.5px solid rgba(255, 255, 255, .35); font-size: 1.2rem; }
-.menu summary::-webkit-details-marker { display: none; }
-.menu[open] summary { background: #fff; color: #0b0b0b; }
-.menu > div { position: absolute; right: 0; top: calc(100% + 8px); min-width: 190px; display: grid; background: #171717; box-shadow: 0 24px 50px rgba(0, 0, 0, .6); }
-.nav .menu a { padding: 15px 18px; background-position: 18px calc(100% - 10px); }
+/* phone menu: below 560px the page links live in a full-screen panel. The links unfold in 3D over a moving perspective grid. */
+.menu { display: none; }
 @media (max-width: 560px) { .menu { display: block; } .nav { gap: 10px; } }
+html:has(.menu[open]) { overflow: hidden; }
+.menu summary { position: relative; z-index: 2; list-style: none; width: 46px; height: 46px; border-radius: 14px; cursor: pointer; background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .28);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 8px 18px rgba(0, 0, 0, .5); transition: transform .3s var(--ease), background .3s; }
+.menu summary::-webkit-details-marker { display: none; }
+.menu summary:active { transform: scale(.92); }
+/* two bars that cross into an X */
+.menu summary::before, .menu summary::after { content: ''; position: absolute; left: 13px; right: 13px; top: 22px; height: 2px; border-radius: 2px; background: #fff; transition: transform .35s var(--ease); }
+.menu summary::before { transform: translateY(-4px); }
+.menu summary::after { transform: translateY(4px); }
+.menu[open] summary { background: #1fb57a; border-color: #1fb57a; }
+.menu[open] summary::before { transform: rotate(45deg); background: #0b0b0b; }
+.menu[open] summary::after { transform: rotate(-45deg); background: #0b0b0b; }
+.menu > div { position: fixed; inset: 0; z-index: 1; overflow: hidden; display: grid; align-content: center; gap: 6px; padding: 96px var(--m) 40px; perspective: 900px;
+  background: radial-gradient(90% 55% at 100% 0%, rgba(31, 181, 122, .38), transparent 70%), radial-gradient(70% 45% at 0% 100%, rgba(31, 181, 122, .22), transparent 70%), rgba(8, 8, 8, .96); animation: veil .35s ease both; }
+@keyframes veil { from { opacity: 0; } }
+/* perspective floor: a grid laid flat and scrolling toward the viewer */
+.menu > div::before { content: ''; position: absolute; z-index: -1; left: -50%; right: -50%; bottom: -12%; height: 60%; transform: rotateX(72deg); transform-origin: 50% 100%;
+  background: linear-gradient(rgba(31, 181, 122, .55) 1px, transparent 1px) 0 0 / 44px 44px, linear-gradient(90deg, rgba(31, 181, 122, .55) 1px, transparent 1px) 0 0 / 44px 44px;
+  -webkit-mask-image: linear-gradient(transparent, #000 75%); mask-image: linear-gradient(transparent, #000 75%); animation: floor 2.4s linear infinite; }
+@keyframes floor { to { background-position: 0 44px, 0 44px; } }
+.menu > div > * { transform-origin: 50% 0; animation: unfold .7s var(--ease) both; animation-delay: calc(.08s + var(--i) * 70ms); }
+@keyframes unfold { from { opacity: 0; transform: rotateX(-88deg) translateY(-24px); } }
+.nav .menu a.big { display: flex; align-items: baseline; gap: 14px; padding: 6px 0; font: 800 clamp(2.6rem, 13vw, 4rem)/1.05 Montserrat, Epilogue, sans-serif; text-transform: uppercase; letter-spacing: -.02em;
+  background: var(--g); -webkit-background-clip: text; background-clip: text; color: transparent; transition: translate .3s var(--ease); }
+.nav .menu a.big small { font: 500 .8rem Epilogue, sans-serif; letter-spacing: .08em; color: #1fb57a; -webkit-text-fill-color: #1fb57a; }
+.nav .menu a.big:hover, .nav .menu a.big:active { translate: 12px 0; background: none; color: #1fb57a; }
+.nav .menu .btn { justify-self: start; margin-top: 22px; padding: 14px 24px; font-size: 1.05rem; }
+.menu p { display: flex; gap: 10px; margin-top: 18px; }
+.nav .menu p a { width: 48px; height: 48px; display: grid; place-items: center; padding: 0; border-radius: 14px; font-size: 1.2rem; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .2); }
