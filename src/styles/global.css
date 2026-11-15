@@ -400,3 +400,11 @@ section:not(.hero) h2:hover { letter-spacing: .01em; }
 /* confirmation shown when an email link copies the address */
 .toast { position: fixed; z-index: 30; left: 50%; bottom: 24px; max-width: calc(100vw - 32px); margin: 0; padding: 12px 18px; background: #1fb57a; color: #0b0b0b; font-weight: 500; font-size: var(--small); translate: -50% 200%; opacity: 0; transition: translate .4s var(--ease), opacity .3s; pointer-events: none; }
 .toast.on { translate: -50% 0; opacity: 1; }
+
+/* footer columns may shrink below their content, and the long email address wraps instead of widening the page */
+.fcols { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.fcols a { overflow-wrap: anywhere; min-width: 0; max-width: 100%; }
+@media (max-width: 700px) { .fcols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* the one-line wordmark must not set the footer's width: it is fitted to the footer, not the other way round */
+footer { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 560px) { .rows a { font-size: 1.2rem; } }
