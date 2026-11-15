@@ -1,0 +1,21 @@
+---
+// Real screenshots live in src/assets/shots. "<slug>.png" is the main screen; any other file whose
+// name starts with the slug ("mise2.png", "mise-kitchen.png") is an extra for the case-study gallery.
+// A project with no screenshot falls back to the drawn illustration.
+import { Image } from 'astro:assets';
+import Mock from './Mock.astro';
+
+export function shots(slug) {
+  // inside the function: Astro hoists exports out of the component, where top-level consts are not in scope
+  const all = import.meta.glob('../assets/shots/*.{png,jpg,jpeg,webp}', { eager: true, import: 'default' });
+  const mine = Object.entries(all)
+    .map(([path, img]) => [path.split('/').pop().toLowerCase().replace(/\.\w+$/, ''), img])
+    .filter(([name]) => name.startsWith(slug))
+    .sort(([a], [b]) => a.localeCompare(b));
+  return { main: mine.find(([name]) => name === slug)?.[1], extra: mine.filter(([name]) => name !== slug).map(([, img]) => img) };
+}
+
+const { slug, name } = Astro.props;
+const { main } = shots(slug);
+---
+{main ? <Image src={main} alt={`${name}: screenshot of the running project`} width={1400} loading="lazy" /> : <Mock slug={slug} />}

@@ -1,0 +1,217 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Shot, { shots } from '../components/Shot.astro';
+import Icon from '../components/Icon.astro';
+import portrait from '../assets/portrait.jpg';
+import idPhoto from '../assets/id.png';
+import { projects, more, skills, certs, email, github, linkedin } from '../data/projects.js';
+
+const sample = await getImage({ src: portrait, width: 640, format: 'jpg', quality: 90 });
+// a tiny copy of each screenshot, blurred in CSS into the coloured glow behind its laptop
+const glow = {};
+for (const p of projects) {
+  const { main } = shots(p.slug);
+  if (main) glow[p.slug] = (await getImage({ src: main, width: 64, format: 'webp' })).src;
+}
+const letters =[['M', -40, -60, -20], ['a', 30, 50, 14], ['h', -10, -80, 8], ['a', 50, 40, -16], ['d', 80, -50, 22]];
+const roles = ['Full-Stack Python Developer', 'DevOps & Cloud Architect', 'Agentic AI Specialist'];
+const help = [
+  ['Founders with a product to ship', 'Web apps and SaaS platforms from wireframe to production: React or Next.js up front, FastAPI or Django behind, PostgreSQL underneath.'],
+  ['Teams that still deploy by hand', 'CI/CD pipelines, Docker and Kubernetes, AWS and Azure. Releases that are tested, repeatable and uneventful.'],
+  ['Businesses that want AI agents', 'Agents with retrieval, tools and voice, built so every action that touches money, files or production waits for a person.'],
+];
+const events = ['the Alpaca × lablab.ai AI Trading Agents Hackathon', 'the Kaggle × Google hackathon', 'the Google AI Hackathon', 'the AMD Developer Hackathon ACT II and ACT III', 'the AI Factory Native.Builder Hackathon', 'the Alibaba Cloud AI Hackathon in Pakistan'];
+---
+<Base
+  title="Mahad Amir | Full-Stack Python Developer, DevOps Architect, Agentic AI Specialist"
+  description="Hafiz Mahad Amir is a full-stack Python developer, DevOps and cloud architect and agentic AI specialist in Lahore, and co-founder of Pathways Partners. See six case studies."
+>
+  <section class="hero">
+    <Image class="fallback" src={portrait} alt="Black and white portrait of Mahad Amir wearing sunglasses" width={700} loading="eager" fetchpriority="high" />
+    <canvas data-src={sample.src} aria-hidden="true"></canvas>
+    <div class="title">
+      <div>
+        <h1 class="mon" aria-label="Mahad Amir: full-stack Python developer, DevOps and cloud architect, agentic AI specialist">
+          <span aria-hidden="true">{letters.map(([l, x, y, r], i) => <span style={`--i:${i};--x:${x}vw;--y:${y}vh;--r:${r}deg`}>{l}</span>)}</span>
+        </h1>
+        <div class="roles" aria-hidden="true"><div>{[...roles, roles[0]].map((r) => <span>{r}</span>)}</div></div>
+      </div>
+    </div>
+    <div class="hero-info">
+      <p>I build full-stack platforms, cloud infrastructure and agentic AI with human oversight. Based in Lahore, open to remote roles.</p>
+      <a class="btn" href="#work">See the work<Icon name="down" /></a>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    {[0, 1].map(() => <div>{roles.map((r) => <><span>{r}</span><span>✦</span></>)}</div>)}
+  </div>
+
+  <section class="light wrap who" id="who">
+    <div>
+      <h2 class="rv">Who I am</h2>
+      <p class="lead rv" style="--d:1">I'm Hafiz Mahad Amir, a full-stack Python developer in Lahore and co-founder of Pathways Partners.</p>
+      <dl class="facts rv" style="--d:2">
+        <div><dt>Experience</dt><dd>5+ years of Python</dd></div>
+        <div><dt>Status</dt><dd>Open to work</dd></div>
+      </dl>
+      <a class="pp rv" style="--d:3" href="https://www.instagram.com/pathways.partners.co/">
+        <img src="/logos/pathways.jpg" alt="Pathways Partners logo" width="84" height="84" loading="lazy" />
+        <span><b>Co-founder, Pathways Partners</b><br /><span class="muted">Digital agency: website development, social media management, graphic and print design.</span></span>
+      </a>
+      <div class="pp rv" style="--d:4;margin-top:8px">
+        <span class="pp-ic"><Icon name="code" /></span>
+        <span><b>Python &amp; DevOps Consultant</b><br /><span class="muted">Freelance, working remotely with startups worldwide since 2021.</span></span>
+      </div>
+    </div>
+    <div>
+      <h2 class="rv">Who I help</h2>
+      <ul class="help">
+        {help.map(([t, d], i) => <li class="rv" style={`--d:${i + 1}`}><h3>{t}</h3><p>{d}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="work" id="work">
+    <div class="work-head">
+      <h2 class="rv">Selected work</h2>
+      <p class="rv muted" style="--d:1">Six systems I designed and built alone. Every one is open on GitHub.</p>
+    </div>
+    <div>
+      {projects.map((p) => (
+        <article class="prow">
+          <div class="ptxt">
+            <h3 class="rv"><a href={`/work/${p.slug}/`}>{p.name}</a></h3>
+            <p class="lead rv" style="--d:1">{p.tagline}</p>
+            <ul class="rv" style="--d:2">{p.outcome.slice(0, 2).map((o) => <li>{o}</li>)}</ul>
+            <a class="btn rv" style="--d:3" href={`/work/${p.slug}/`}>Read the case study<Icon name="arrow" /></a>
+          </div>
+          <a class="pshot" href={`/work/${p.slug}/`} aria-label={`${p.name} case study`} tabindex="-1" style={`--c:${p.color};` + (glow[p.slug] ? `--img:url(${glow[p.slug]})` : '')}><div class="pstage"><div class="laptop"><div class="shot"><Shot slug={p.slug} name={p.name} /></div><span class="deck"></span></div></div></a>
+        </article>
+      ))}
+    </div>
+  </section>
+  <section class="more-wrap">
+    <h2 class="rv">More builds</h2>
+    <div class="more">
+      {more.map(([n, d, u, tags], i) => (
+        <a class="rv" style={`--d:${i}`} href={u}>
+          <span class="orb" aria-hidden="true"><b>{n[0]}</b></span>
+          <h3>{n}</h3>
+          <p class="muted">{d}</p>
+          <ul class="tags">{tags.map((t) => <li>{t}</li>)}</ul>
+          <span class="go">View on GitHub <i aria-hidden="true">→</i></span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="light wrap about" id="about">
+    <div class="hang rv">
+      <span class="strap" aria-hidden="true"></span>
+      <span class="clip" aria-hidden="true"></span>
+      <button class="id" type="button" aria-pressed="false" aria-label="Mahad's ID badge. Press to flip.">
+        <span class="front">
+          <span class="id-head"><b>Developer ID</b><span>Pathways Partners · 2026</span></span>
+          <Image src={idPhoto} alt="Mahad Amir in profile, wearing sunglasses and a black jacket" width={354} />
+          <span class="id-name"><b>Mahad Amir</b><span>Full-stack Python developer</span></span>
+          <span class="id-row"><span><i>ID</i>MA-0001</span><span><i>Based</i>Lahore</span><span><i>Status</i>Open</span></span>
+          <span class="bars"></span>
+        </span>
+        <span class="back">
+          <b>Hafiz Mahad Amir</b>
+          <span>Co-founder, Pathways Partners</span>
+          <span>5+ years of Python</span>
+          <span>Agentic AI · DevOps · Cloud</span>
+          <span>Open to remote roles and relocation</span>
+          <span>Talkative. Ask me anything.</span>
+          <span class="bars"></span>
+        </span>
+      </button>
+    </div>
+    <div>
+      <h2 class="rv">About</h2>
+      <p class="lead rv" style="--d:1">I learn by building in public. Hackathons are where I test an idea under a deadline, and I keep the ones worth finishing.</p>
+      <p class="rv" style="--d:2;max-width:60ch">Hifazat started after I was scammed. ThetaGuard taught me to distrust my own agent's log lines. Mise is what happens when I stay with one problem for 122 commits. I work across the whole stack, from an ESP-32 on my desk to Kubernetes in the cloud.</p>
+      <p class="acts rv" style="--d:3"><a class="btn" href={`mailto:${email}`}><Icon name="mail" />Email me</a><a class="btn ghost" href={github}><Icon name="github" />GitHub</a><a class="btn ghost" href={linkedin}><Icon name="linkedin" />LinkedIn</a></p>
+    </div>
+    <dl class="quick">
+      {[['Based in', 'Lahore, Pakistan'], ['Company', 'Pathways Partners'], ['Experience', '5+ years of Python'], ['Focus', 'Agentic AI, DevOps, cloud'], ['Status', 'Open to remote and relocation']].map(([k, v], i) => <div class="rv" style={`--d:${i}`}><dt>{k}</dt><dd>{v}</dd></div>)}
+    </dl>
+  </section>
+
+  <section class="wrap" id="stack">
+    <h2 class="rv">What I build with</h2>
+    <div class="stack rv">
+      {[0, 1, 2].map((row) => {
+        const items = skills.flatMap(([, s]) => s.map(([, n]) => n)).filter((_, i) => i % 3 === row);
+        return <ul>{items.map((n) => <li>{n}</li>)}{items.map((n) => <li aria-hidden="true">{n}</li>)}</ul>;
+      })}
+    </div>
+  </section>
+
+  <section class="light wrap proof">
+    <div>
+      <h2 class="rv">Built under deadline</h2>
+      <p class="rv" style="--d:1">I have built and shipped at {events.map((e, i) => <><span class={i === 0 ? 'lit' : ''}>{e}</span>{i < events.length - 2 ? ', ' : i === events.length - 2 ? ' and ' : '.'}</>)}</p>
+    </div>
+    <div>
+      <h2 class="rv">Certified</h2>
+      <ul class="certs">
+        {certs.map(([n, who, logo], i) => (
+          <li class="rv" style={`--d:${i % 4}`}>
+            <img src={`/logos/${logo}${logo.includes('.') ? '' : '.jpg'}`} alt="" width="48" height="48" loading="lazy" />
+            <span><b>{n}</b><span class="small muted">{who}</span></span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap contact" id="contact">
+    <h2 class="rv">Let's talk</h2>
+    <div class="contact-grid">
+      <ul class="rows">
+        <li class="rv"><a href={`mailto:${email}`}><Icon name="mail" />{email}</a></li>
+        <li class="rv" style="--d:1"><a href={github}><Icon name="github" />github.com/imahad-dev</a></li>
+        <li class="rv" style="--d:2"><a href={linkedin}><Icon name="linkedin" />LinkedIn</a></li>
+      </ul>
+      <form class="gate light rv" data-to={email} data-ui>
+        <h3>One request is waiting for your approval</h3>
+        <label>Mahad wants to work with you on
+          <select name="what">
+            <option>A SaaS product or web app</option>
+            <option>CI/CD and cloud infrastructure</option>
+            <option>An AI agent with human approval</option>
+            <option>A full-time engineering role</option>
+          </select>
+        </label>
+        <label>Starting
+          <select name="when">
+            <option>This month</option>
+            <option>Next month</option>
+            <option>Whenever suits you</option>
+          </select>
+        </label>
+        <div class="acts">
+          <button class="btn" type="submit">Approve</button>
+          <button class="btn ghost" type="button" data-no>Not now</button>
+        </div>
+        <p class="small" aria-live="polite">Approving opens an email to Mahad. Nothing is sent until you send it.</p>
+        <p class="small" data-alt hidden>Nothing opened? <a class="link" data-gmail target="_blank" rel="noopener">Write it in Gmail</a> or <button class="link" type="button" data-copy>copy my email address</button>.</p>
+      </form>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const stage = document.querySelector('.hero');
+  const root = document.documentElement;
+  const ok = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // particles start assembling the moment the loading screen lifts
+  const ready = new Promise((r) => (root.classList.contains('ready') ? r() : addEventListener('site-ready', r, { once: true })));
+  // three.js loads behind the loading screen; the plain portrait stays if WebGL or motion is unavailable
+  const go = () => window.siteGo?.();
+  if (stage && ok) import('../scripts/hero.js').then((m) => m.start(stage, ready)).catch(() => root.classList.add('nogl')).then(go);
+</script>

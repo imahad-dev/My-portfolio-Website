@@ -1,0 +1,58 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Shot, { shots } from '../../components/Shot.astro';
+import Icon from '../../components/Icon.astro';
+import { projects } from '../../data/projects.js';
+
+export function getStaticPaths() {
+  return projects.map((p, i) => ({ params: { slug: p.slug }, props: { p, next: projects[(i + 1) % projects.length] } }));
+}
+const { p, next } = Astro.props;
+const { main, extra } = shots(p.slug);
+---
+<Base title={`${p.name} case study | Mahad Amir`} description={`${p.tagline} A case study by Mahad Amir: the problem, the process and the outcome.`}>
+  <section class="case-hero">
+    <a class="btn ghost back" href="/#work"><Icon name="back" />All work</a>
+    <h1 data-fit="24"><span class="f">{p.name}</span></h1>
+    <p class="lead">{p.tagline}</p>
+  </section>
+  <section class="case-top">
+    <dl class="facts">
+      <div><dt>Role</dt><dd>{p.role}</dd></div>
+      <div><dt>Year</dt><dd>{p.year}</dd></div>
+      <div><dt>Stack</dt><dd>{p.stack.join(', ')}</dd></div>
+      <div><dt>Code</dt><dd><a class="btn" href={p.repo}><Icon name="github" />View on GitHub</a></dd></div>
+    </dl>
+    <figure style="margin:0">
+      <div class="pstage rv" style={`--c:${p.color}`}><div class="win"><div class="shot"><Shot slug={p.slug} name={p.name} /></div></div></div>
+      <figcaption class="small muted" style="margin-top:10px">{main ? 'Screenshot of the running project.' :"Interface illustration drawn from the project's README, with sample values."}</figcaption>
+    </figure>
+  </section>
+
+  {extra.length > 0 && <section class="gallery">{extra.map((img, i) => <figure class="pstage rv" style={`--c:${p.color};--d:${i}`}><div class="win"><Image src={img} width={1100} alt={`${p.name}: another screen of the running project`} loading="lazy" /></div></figure>)}</section>}
+
+  <section class="light wrap case-sec">
+    <h2 class="rv">The problem</h2>
+    <p class="rv" style="--d:1">{p.problem}</p>
+  </section>
+
+  <section class="wrap case-sec">
+    <h2 class="rv">The process</h2>
+    <ol class="steps">
+      {p.process.map(([t, d], i) => <li class="rv" style={`--d:${i % 3}`}><h3>{t}</h3><p>{d}</p></li>)}
+    </ol>
+  </section>
+
+  <section class="wrap case-sec" style="padding-top:0">
+    <h2 class="rv">How it flows</h2>
+    <ol class="flow rv" style="--d:1">{p.flow.map((s) => <li>{s}</li>)}</ol>
+  </section>
+
+  <section class="light wrap case-sec">
+    <h2 class="rv">The outcome</h2>
+    <ul class="outs">{p.outcome.map((o, i) => <li class="rv" style={`--d:${i % 3}`}>{o}</li>)}</ul>
+  </section>
+
+  <a class="next" href={`/work/${next.slug}/`}><span>Next case study <Icon name="arrow" /></span><b>{next.name}</b></a>
+</Base>

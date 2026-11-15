@@ -1,0 +1,91 @@
+---
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import portrait from '../assets/portrait.jpg';
+import Logo from '../components/Logo.astro';
+import Icon from '../components/Icon.astro';
+import { email, github, linkedin } from '../data/projects.js';
+
+const { title, description } = Astro.props;
+const url = new URL(Astro.url.pathname, Astro.site);
+const og = await getImage({ src: portrait, width: 1200, height: 630, fit: 'cover', position: 'top', format: 'jpg' });
+const ogUrl = new URL(og.src, Astro.site);
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Hafiz Mahad Amir',
+  alternateName: 'Mahad Amir',
+  jobTitle: 'Full-Stack Python Developer, DevOps and Cloud Architect, Agentic AI Specialist',
+  worksFor: { '@type': 'Organization', name: 'Pathways Partners' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Lahore', addressCountry: 'PK' },
+  url: Astro.site,
+  email,
+  sameAs: [github, linkedin],
+  knowsAbout: ['Python', 'FastAPI', 'Agentic AI', 'LangGraph', 'DevOps', 'CI/CD', 'AWS', 'Azure', 'Docker', 'Kubernetes', 'React', 'Next.js'],
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={url} />
+    <meta name="theme-color" content="#0b0b0b" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={ogUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;900&family=Montserrat:wght@800&display=swap" rel="stylesheet" />
+    <script type="application/ld+json" set:html={JSON.stringify(person)} />
+    <script is:inline>
+      // The loading screen plays once per visit, on pages that have one, and never under reduced motion.
+      (function () {
+        var r = document.documentElement, still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        r.classList.add('js');
+        if (still) r.classList.add('still');
+        if (still || location.pathname !== '/') return r.classList.add('ready');
+        // Homepage: the loader lifts once it has played (2.2s) AND the particles are ready; 6s failsafe.
+        r.classList.add('loading');
+        var n = 0, done = false;
+        window.siteGo = function () {
+          if (++n < 2 || done) return;
+          done = true; r.classList.replace('loading', 'ready'); dispatchEvent(new Event('site-ready'));
+        };
+        setTimeout(window.siteGo, 2200);
+        setTimeout(function () { n = 2; window.siteGo(); }, 6000);
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="loader" aria-hidden="true"><div class="blob"><b>{[...'MAHAD'].map((l, i) => <span style={`--i:${i}`}>{l}</span>)}</b></div></div>
+    <a class="skip" href="#main">Skip to content</a>
+    <nav class="nav" aria-label="Main">
+      <a class="brand" href="/" aria-label="Mahad Amir, home"><Logo /></a>
+      <a class="opt" href="/#work">Work</a>
+      <a class="opt" href="/#about">About</a>
+      <a class="opt" href="/#contact">Contact</a>
+      <a class="btn" href="/#contact">Hire me</a>
+    </nav>
+    <main id="main"><slot /></main>
+    <footer class="light">
+      <div class="fcols">
+        <ul><li>Mahad Amir</li><li class="muted">Lahore, Pakistan</li><li class="muted">Open to remote roles and relocation</li></ul>
+        <ul><li>Site</li><li><a href="/#work">Work</a></li><li><a href="/#about">About</a></li><li><a href="/#contact">Contact</a></li></ul>
+        <ul><li>Elsewhere</li><li><a href={github}><Icon name="github" />GitHub</a></li><li><a href={linkedin}><Icon name="linkedin" />LinkedIn</a></li></ul>
+        <ul><li>Write to me</li><li><a href={`mailto:${email}`}><Icon name="mail" />{email}</a></li></ul>
+      </div>
+      <div>
+        <p class="wordmark" data-fit aria-hidden="true"><span class="f">Mahad Amir</span></p>
+        <p class="small muted">© 2026 Hafiz Mahad Amir. Full-stack Python developer, DevOps and cloud architect, agentic AI specialist.</p>
+      </div>
+    </footer>
+    <script>import '../scripts/site.js';</script>
+  </body>
+</html>

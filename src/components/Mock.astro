@@ -1,0 +1,108 @@
+---
+// Interface illustrations drawn from each project's README. Sample values, not screenshots of the running apps.
+const { slug } = Astro.props;
+---
+{slug === 'mise' && (
+  <div class="ui" data-ui>
+    <div class="ui-bar"><b>Floor</b><span>Angeethi House, Lahore</span><span class="r">Floor (3)</span></div>
+    <div class="ui-g">
+      <div class="red"><b>T1</b>Approve order<span>1 item · Rs 300</span></div>
+      <div class="red"><b>T2</b>Waiter called<span>Water, please</span></div>
+      <div class="amb"><b>T3</b>Paying<span>Raast QR · Rs 4,640</span></div>
+      <div><b>T4</b>Ordered<span>9 min · Rs 2,100</span></div>
+      <div><b>T5</b>Served<span>21 min</span></div>
+      <div><b>T6</b>Seated, no order<span>2 min</span></div>
+      <div><b>T7</b>Needs clearing<span>1 min</span></div>
+      <div class="grn"><b>T8</b>Free</div>
+    </div>
+    <div class="ui-p"><b>Chicken Karahi — 1 kg</b><span>Table 4 · sent to kitchen · allergens: milk</span></div>
+  </div>
+)}
+{slug === 'hifazat' && (
+  <div class="ui" data-ui style="--u:#e9e4dc">
+    <div class="ui-bar"><b>حفاظت Hifazat</b><span>WhatsApp</span></div>
+    <div class="ui-2">
+      <div style="display:grid;gap:8px;align-content:start">
+        <p class="bub me" lang="ur" dir="rtl">آپ کا اکاؤنٹ بلاک ہو جائے گا۔ ابھی OTP بتائیں۔</p>
+        <p class="bub" lang="ur" dir="rtl">یہ پیغام فراڈ لگتا ہے۔ بینک کبھی OTP نہیں مانگتا۔ کسی کو OTP نہ بتائیں۔</p>
+        <p class="bub">Voice reply · Urdu · 0:14</p>
+      </div>
+      <div class="ui-p">
+        <b>Approval queue</b>
+        <span>Flag sender as scam · confidence high</span>
+        <span class="ui-chip amb">Waiting for reviewer</span>
+        <div class="ui-acts"><span class="ui-chip dk">Approve</span><span class="ui-chip" style="background:#e3e3e0">Reject</span></div>
+      </div>
+    </div>
+  </div>
+)}
+{slug === 'mark-xxxv' && (
+  <div class="ui dk" data-ui style="--u:#111">
+    <div class="ui-bar"><b>MARK XXXV</b><span class="ui-chip grn">LISTENING</span><span style="margin-left:auto">F4 mute</span></div>
+    <div class="bars">{Array.from({ length: 28 }, (_, n) => <i style={`--n:${(n * 7) % 11}`} />)}</div>
+    <div class="ui-2">
+      <div class="ui-p" style="background:#1e1e1e">
+        <b>Goal: audit project dependencies</b>
+        <span>Done · list packages</span><span>Done · check advisories</span><span>Running · write report</span>
+        <div class="meter" style="background:#333"><i style="width:21%;background:#c6f19d" /></div>
+        <span>$0.41 of $2.00 budget · depth 1 of 3</span>
+      </div>
+      <div class="ui-p lime" style="color:#111">
+        <b>Approval needed</b>
+        <span>Remove-Item .\build -Recurse</span>
+        <div class="ui-acts"><span class="ui-chip dk">Approve</span><span class="ui-chip" style="background:#fff">Deny</span></div>
+      </div>
+    </div>
+  </div>
+)}
+{slug === 'ai-company' && (
+  <div class="ui" data-ui>
+    <div class="ui-bar"><b>Mission control</b><span>Provider: mock</span><span class="r">9 of 14 agents</span></div>
+    <div class="sq">{Array.from({ length: 14 }, (_, n) => <i class={n < 9 ? 'd' : n === 9 ? 'c' : ''} />)}</div>
+    <div class="ui-2">
+      <div class="ui-p">
+        <b>Approval request</b>
+        <span>Write 6 files to the workspace</span><span>Install 2 dependencies</span>
+        <div class="ui-acts"><span class="ui-chip dk">Approve</span><span class="ui-chip" style="background:#e3e3e0">Reject</span></div>
+      </div>
+      <div class="ui-p">
+        <b>Quality</b><span>Score 0.86 · retried once</span>
+        <b>GitHub</b><span>Pull request · preflight passing</span>
+      </div>
+    </div>
+  </div>
+)}
+{slug === 'thetaguard' && (
+  <div class="ui" data-ui>
+    <div class="ui-bar"><b>ThetaGuard</b><span>ALPACA_LIVE_PAPER_API</span><span class="r">Read-only</span></div>
+    <table>
+      <tr><th>Symbol</th><th>Structure</th><th>Short delta</th><th>Exit</th></tr>
+      <tr><td>SPY</td><td>Put credit spread · $5 wide</td><td>-0.17</td><td>TP 50% resting · SL 200%</td></tr>
+      <tr><td>QQQ</td><td colspan="3"><span class="ui-chip red">Blocked · NFP blackout, Sep 4, 8:30 ET</span></td></tr>
+    </table>
+    <div class="ui-2">
+      <div class="ui-p"><b>Risk caps</b><span>1 of 2 spreads open</span><div class="meter"><i style="width:36%" /></div><span>1.8% of 5% portfolio risk</span></div>
+      <div class="ui-p"><b>Audit trail</b><span>Reason written before order</span><span>IV rank 34 · floor 30</span></div>
+    </div>
+  </div>
+)}
+{slug === 'tablesync' && (
+  <div class="ui" data-ui>
+    <div class="ui-bar"><b>TableSync</b><span>MuJoCo · overhead camera</span><span class="r">Handoff</span></div>
+    <div class="ui-2">
+      <svg viewBox="0 0 320 190" role="img" aria-label="Two robot arms meeting above a table to hand over a cube" style="background:#fff;width:100%;height:auto">
+        <rect x="20" y="150" width="280" height="14" fill="#111" />
+        <rect x="34" y="120" width="26" height="30" fill="#111" /><rect x="260" y="120" width="26" height="30" fill="#111" />
+        <path d="M47 122 L95 62 L150 84" fill="none" stroke="#111" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" />
+        <path d="M273 122 L225 62 L170 84" fill="none" stroke="#111" stroke-width="12" stroke-linejoin="round" stroke-linecap="round" />
+        <circle cx="95" cy="62" r="9" fill="#c6f19d" /><circle cx="225" cy="62" r="9" fill="#c6f19d" />
+        <rect x="149" y="74" width="22" height="22" fill="#c6f19d" stroke="#111" stroke-width="3" />
+      </svg>
+      <div class="ui-p">
+        <b>Plan (validated)</b>
+        <span>LEFT · pick · cube</span><span>LEFT · move to handoff</span><span>RIGHT · grasp at handoff</span>
+        <span class="ui-chip lime">Contact 10 of 10 frames</span>
+      </div>
+    </div>
+  </div>
+)}
