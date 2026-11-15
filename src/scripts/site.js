@@ -119,3 +119,10 @@ if (gate) {
   );
   gate.querySelector('[data-no]').addEventListener('click', () => (say.textContent = 'No problem. Nothing was sent, and the request stays in the queue.'));
 }
+
+// Phone menu closes after a link is chosen, or on Escape.
+const menu = document.querySelector('.menu');
+if (menu) {
+  menu.addEventListener('click', (e) => e.target.closest('a') && (menu.open = false));
+  addEventListener('keydown', (e) => e.key === 'Escape' && (menu.open = false));
+}

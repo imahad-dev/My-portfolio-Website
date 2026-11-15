@@ -408,3 +408,12 @@ section:not(.hero) h2:hover { letter-spacing: .01em; }
 /* the one-line wordmark must not set the footer's width: it is fitted to the footer, not the other way round */
 footer { grid-template-columns: minmax(0, 1fr); }
 @media (max-width: 560px) { .rows a { font-size: 1.2rem; } }
+
+/* phone menu: the page links hide below 560px, so a menu button opens them as a dropdown */
+.menu { display: none; position: relative; }
+.menu summary { list-style: none; width: 44px; height: 44px; display: grid; place-items: center; cursor: pointer; border: 1.5px solid rgba(255, 255, 255, .35); font-size: 1.2rem; }
+.menu summary::-webkit-details-marker { display: none; }
+.menu[open] summary { background: #fff; color: #0b0b0b; }
+.menu > div { position: absolute; right: 0; top: calc(100% + 8px); min-width: 190px; display: grid; background: #171717; box-shadow: 0 24px 50px rgba(0, 0, 0, .6); }
+.nav .menu a { padding: 15px 18px; background-position: 18px calc(100% - 10px); }
+@media (max-width: 560px) { .menu { display: block; } .nav { gap: 10px; } }
